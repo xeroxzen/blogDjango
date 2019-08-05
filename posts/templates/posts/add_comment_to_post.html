@@ -1,0 +1,8 @@
+{% extends "posts/base.html" %}
+
+{% block content %}
+    <h1>New Comment</h1>
+    <form method="POST" class="form-row">{% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="save btn btn-small">Send Comment</button>
+    </form> 
+{% endblock content %}

@@ -1,0 +1,130 @@
+{% comment %} <a class= "btn" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a> {% endcomment %}
+	{% comment %} {% for comment in post.comments.all %}
+		<div class="comment">
+			<div class="datepicker-date-display">{{ comment.created_date }}</div>
+			<strong>{{comment.author}}</strong>
+			<p>{{ comment.comment|linebreaks }}</p>
+		</div>
+		{% empty %}
+
+		<p>No Comments Here yet...</p>
+		{% endfor %} {% endcomment %}
+
+# def add_comment_to_post(request, pk):
+# 	post = get_object_or_404(Posts, pk=pk)
+# 	if request.method == 'POST':
+# 		form = CommentForm(request.POST)
+# 		if form.is_valid():
+# 			commmet = form.save(comment=False)
+# 			comment.post = post
+# 			comment.save()
+# 			return redirect('details', pk=post.pk)
+# 	else:
+# 		form = CommentForm()
+# 		return render(request, 'posts/add_comment_to_post.html', {'form' : form})
+
+<p>{{ posts.comment|linebreaksbr }}</p>
+				{% comment %} <a href="{% url 'details' pk=post.pk %}">Comments: {{ post.comments.count }} </a> {% endcomment %}
+
+# class Comment(models.Model):
+#     post = models.ForeignKey('posts.Posts', related_name='comments', on_delete=models.CASCADE)
+#     author = models.CharField(max_length=255)
+#     comment = models.TextField()
+#     created_date = models.DateTimeField(default=datetime.now, blank=True)
+#     approved_comment = models.BooleanField(default=False)
+
+#     def approve(self):
+#         self.approved_comment = True
+#         self.save()
+
+#     def __str__(self):
+#         return self.comment
+
+# class CommentForm(models.Model):
+
+#     class Meta:
+#         verbose_name_plural = 'Comments'
+#         model = Comment
+#         fields = ('author', 'comment')
+
+{% comment %} <header>
+		<nav class="nav-wrapper nav-content transparent"></nav>
+			<div class="container nav-content">
+				<a href="#" class="nav-title brand-logo"> Zen Media</a>
+				<a href="#" class="sidenav-trigger" data-target="mobile-menu">
+					<i class="material-icons"></i>
+				</a>
+					<ul class="right">
+						<li><a href="#">Home</a></li>
+						<li><a href="#">About</a></li>
+						<li><a href="#">Blog</a></li>
+					</ul>
+					<ul class="sidenav grey lighten-2" id="mobile-menu">
+						<li><a href="#">Home</a></li>
+						<li><a href="#">About</a></li>
+						<li><a href="#">Blog</a></li>
+					</ul>
+			</div>
+		</nav>
+	</header> {% endcomment %}
+
+	{% for object in object_list %}
+{% get_comment_count for object as comment_count %}
+	<div class="py-4 text-center">
+		<a href="{% url 'posts:index' %}">Back to the post list</a>
+		&nbsp;&sdot;&nbsp;
+		{{ comment_count }} comment {{ comment_count | pluralize }}
+		ha{{ comment_count | pluralize:"s,ve" }} been posted.
+	</div>
+
+	{% if comment_count %}
+	<hr>
+
+	<div class="comment-title">
+		{% render_comment_list for object %}
+	</div>
+	{% endif %}
+
+	{% if object.allow_comments %}
+	<div class="comment">
+		<h4 class="center-align">Your Comment</h4>
+		<div class="well">
+			{% render_comment_form for object %}
+		</div>
+	</div>
+	{% endif %}
+	{% endfor %}
+
+	{% if comment_count %}
+
+	<ul class="media-list">
+		{% render_xtdcomment_tree for object %}
+	</ul>
+
+	{% endif %}
+
+	<!-- {% load bootstrap4 %}
+{% load comments %}
+{% load comments_xtd %} -->
+
+{% for object in object_list %}
+		{% get_comment_count for object as comment_count %}
+		<p class="date"> Published {{ object.publish }}
+			{% if comment_count %}
+			&sdot;&nbsp;{{ comment_count }} comment {{ comment_count|pluralize }}
+			{% endif %}
+		</p>
+
+{% endfor %}
+
+<!-- {% load comments %} -->
+
+	{% for object in object_list %}
+		{% get_comment_count for object as comment_count %}
+		<p class="date"> Published {{ object.publish }}
+			{% if comment_count %}
+			&sdot;&nbsp;{{ comment_count }} comment {{ comment_count|pluralize }}
+			{% endif %}
+		</p>
+
+	{% endfor %}

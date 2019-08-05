@@ -1,0 +1,21 @@
+{% extends 'posts/base.html' %}
+<head>
+    {% load staticfiles %}
+        <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css' %}" media="screen, projection">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" media="screen, projection">
+</head>
+{% block content %}
+
+    <header class="container center-align">
+		<h3 class="left-align" style="color: red; font: san-serif, 20px, lighter;">Image Uploading Here</h3>
+	</header>
+<ul>
+    {% for post in posts %}
+       {% if post.cover %}
+            <h2>{{ post.title }}</h2>
+            <img src="{{ post.cover.url }}" alt="{{ post.title }}" height=230px width=200px>
+       {% else %}
+       {% endif %}
+    {% endfor %}
+</ul>
+{% endblock content %}

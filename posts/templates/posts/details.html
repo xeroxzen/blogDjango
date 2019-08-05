@@ -1,0 +1,90 @@
+{% extends 'posts/base.html' %}
+
+
+{% block title %} {{ title | post.title }}{% endblock %}
+{% block content %}
+
+<div class="card blue-grey darken-1">
+	<div class="card-content white-text">
+		<span class="card-title">{{post.title}}</span><a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">#</i></i></a>
+	</div>
+	<div class="card-action">
+		<a href="#">Link</a>
+		<a href="#">Link</a>
+	</div>
+</div>
+
+	<div class="card">
+		
+		{% if post.cover %}
+		<div class="card-image">
+			<img src= "{{post.cover.url}}" alt="image goes here">
+			<p style="font-style: italic;" class="right-align text-lighten-3">{{ post.cover_credits }}</p>
+		</div>
+		{% else %}
+		{% endif %}
+		
+		<div class="card-content post-author blue-grey-text hoverable">
+			<div class="post-author"> {{ post.author }} | Follow on Twitter: <a href="https://www.twitter.com/{{ post.author_twitter_account }}">{{ post.author_twitter_account }}</a></span></div> 
+			<br>
+			{{ post.created_at|date:"l, j F Y" }} 
+		</div>
+
+		<div class="card-content responsive-img responsive-video">
+			{{post.body|safe}}
+		</div>
+		
+		<div class="card-action blue-grey darken-1 hoverable">
+			<a href="/categories/">Categories: {{post.category}}</a>
+			<a href="/tags/">Tag: {{post.tag}} </a>
+		</div>
+	</div>
+	<a href="/posts/" class="btn blue-grey darken-1">Go Back</a>
+
+	<!-- Comments go here -->
+
+	<form action="." method="post">
+		{{ comment_form.as_p }}
+		{% csrf_token %}
+
+		<button class="submit waves green hoverable" type="submit">Add Comment</button>
+	</form>
+
+	<!-- Comment List -->
+
+	{% for comment in comments %}
+
+		<p class='comments collection'>{{ comment.name }} | {{ comment.created_at }}</p>
+		{{ comment.body | linebreaks }}
+
+		{% for reply in comment_replies.all %}
+
+		<p>{{ reply.name }} | {{ reply.email }}</p>
+			{{ reply.body | linebreaks }}
+
+		{% endfor %}
+
+		<p>Reply</p>	
+			<form action="." method="POST">
+				{{ comment_form.as_p }}
+				{% csrf_token %}
+				<input type="hidden" name="Parent_id" value="{{ comment_id }}"">
+				<button type="submit">Reply Comment</button>
+			</form>
+
+{% empty %}
+<h4>No Comments Yet...</h4>			
+{% endfor %}						
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

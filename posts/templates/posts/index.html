@@ -1,0 +1,49 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+
+	<ul class="collection">
+		{% for post in posts %}
+			<li class="collection-item">
+				{% if post.cover %}
+					<a href="/posts/article/{{ post.id }}"> <img src="{{post.cover.url}}" alt="post.title" class="hoverable responsive-img waves-effect" height="50%" width="50%"></a>
+					<p style="font-weight: lighter; color: black; font-style: italic; font-size: 12px;" class="smartquote">{{ post.cover_credits }}</p>
+				{% endif %}
+				<h4 class="title">
+					<a href="/posts/article/{{ post.id }}" class="blue-grey-text hoverable">{{post.title}}</a>
+				</h4>
+				<div class="content hoverable">
+					<p class="post-content hoverable">{{post.body|truncatechars:500|safe}}</p>
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+
+	{% comment %} End of collection-item {% endcomment %}
+
+	<div class="pagination paginator right-align">
+	{% if posts.has_previous %}
+		<a href="?page=1" class="btn waves-effect red lighten-3">Back </a>
+		<a href="?page={{ posts.previous_page_number }}"></a>
+
+	{% endif %}
+	{% for num in posts.pagnator.page_range %}
+		{% if posts.number == num %}
+
+		<strong>{{ num }}</strong>
+
+		{% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+			{{ num }}
+		{% endif %}
+
+	{% endfor %}
+	{% if posts.has_next %}
+		<!-- <ul class="pagination"> -->
+			<a href="?page={{ posts.next_page_number }}" class="btn waves-effect blue-grey lighten-1">Next Page </a>
+			<a href="?page={{ posts.paginator.num_pages }}"></a>
+		<!-- </ul> -->
+
+	{% endif %}
+</div>
+
+{% endblock content %}
