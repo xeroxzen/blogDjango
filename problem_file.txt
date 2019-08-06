@@ -1,5 +1,0 @@
-~ How to escape html characters when using CKEditor
-~ How to order posts according to date_created
-~ Pagination
-~ What more can I do with Materialize
-~ Tutorial on CKEditor configuring
